@@ -22,14 +22,17 @@
 // @param size, the number of elements in the array.
 // =================================================================
 template <class T>
-void bubbleSort(T *arr, int size) {
+int bubbleSort(T *arr, int size) {
+	int co = 0;
 	for(int i = size - 1; i > 0; i--){
 		for(int j = 0; j < i; j++){
+			co++;
 			if(arr[j] > arr[j + 1]){
 				swap(arr, j, j + 1);
 			}
 		}
 	}
+	return co;
 }
 
 // =================================================================
@@ -38,14 +41,18 @@ void bubbleSort(T *arr, int size) {
 // @param v, a vector of T elements.
 // =================================================================
 template <class T>
-void bubbleSort(std::vector<T> &v) {
+int bubbleSort(std::vector<T> &v) {
+	int co = 0;
 	for(int i = v.size() - 1; i > 0; i--){
 		for(int j = 0; j < i; j++){
 			if(v[j] > v[j + 1]){
+				co++;
 				swap(v, j, j + 1);
 			}
 		}
 	}
+	return co;
 }
 
 #endif /* BUBBLE_H */
+
