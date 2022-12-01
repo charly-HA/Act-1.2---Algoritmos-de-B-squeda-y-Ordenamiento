@@ -20,11 +20,13 @@
 //
 // @param A, an array of T elements.
 // @param size, the number of elements in the array.
+// @return the number of swaps.
+// @complexity O(n^2)
 // =================================================================
 template <class T>
 int selectionSort(T *arr, int size) {
 	int pos;
-	int co = 0;
+	int counter{};
 
 	for(int i = size - 1; i > 0; i--){
 		pos = 0;
@@ -35,22 +37,24 @@ int selectionSort(T *arr, int size) {
 		}
 
 		if (pos != i){
-			co++;
+			++counter;
 			swap(arr, i, pos);
 		}
 	}
-	return co;
+	return counter;
 }
 
 // =================================================================
 // Performs the selection sort algorithm on a vector.
 //
 // @param A, a vector of T elements.
+// @return the number of swaps.
+// @complexity O(n^2)
 // =================================================================
 template <class T>
 int selectionSort(std::vector<T> &v) {
 	int pos;
-	int co = 0;
+	int counter{};
 
 	for(int i = v.size() - 1; i > 0; i--){
 		pos = 0;
@@ -61,11 +65,11 @@ int selectionSort(std::vector<T> &v) {
 		}
 
 		if (pos != i){
-			co++;
+			++counter;
 			swap(v, i, pos);
 		}
 	}
-	return co;
+	return counter;
 }
 
 #endif /* SELECTION_H */
