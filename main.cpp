@@ -1,57 +1,66 @@
 // =================================================================
 //
 // File: main.cpp
-// Author: Carlos Hernández Arciniega A01709003
-// Date:
+// Author: Carlos Hernández Arciniega
+// Date: 30/08/2022
 //
 // =================================================================
 #include <iostream>
+#include <fstream>
 #include <vector>
+#include <string>
+#include <algorithm>
 #include "header.h"
 #include "search.h"
 #include "bubble.h"
 #include "selection.h"
 #include "insertion.h"
-#include <fstream>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	ifstream input;
-	ofstream output;
+	//variables, vectors and files needed for program to execute
+	int num_of_data, num_of_searches, num_of_comparisons_bubble, num_of_comparisons_selection, num_of_comparisons_insertion;
+	vector<int> data_vec, search_data_vec;
+	string data, searched_data;
+	ifstream input_file(argv[1], ios::in);
+	ofstream output_file(argv[2], ios::out);
 
-	vector<int> vecuno;
-	vector<int> vecdos;
-	vector<int> vectres;
-	
-	if (argc!=3){
-		cout<<"Error"<<endl;
-		return -1;
-	}
-	input.open(argv[1]);
-	if (!input.is_open()){
-		cout << argv[0] << ": File \"" << argv[1] << "\" not found\n";
-		return -1;
-	}
-	output.open(argv[2]);
-	int arreglo;
-	input>>arreglo;
-	vecuno.resize(arreglo);
-	for(int i = 0; i<arreglo; i++){
-		input>>vecuno[i];
-	}
-	vecdos.assign(vecuno.begin(),vecuno.end());
-	vectres.assign(vecuno.begin(),vecuno.end());
-	output<<bubbleSort(vecuno)<<" "<<selectionSort(vecdos)<<" "<<insertionSort(vectres)<<"\n"<<"\n";
+	input_file>>num_of_data;
 
-	int buscar;
-	int absorbe;
-	input>>buscar;
-
-	for (int i = 0; i<buscar;i++){
-		input>>absorbe;
-		sequentialSearch(vecuno,absorbe);
-		output<<binarySearch(vecuno,absorbe)<<" "<<co1<<" "<<co2<<"\n";
+	//reading the vector of data
+	for (size_t i{}; i < num_of_data; ++i) {
+		getline(input_file, data, ' ');
+		data_vec.push_back(stoi(data));
 	}
-	return 0;
+
+	//copies of the vector of data
+	vector<int> data_vec_copy = data_vec;
+	vector<int> data_vec_copy_2 = data_vec;
+
+	//sorting the vector of data
+	num_of_comparisons_bubble = bubbleSort(data_vec);
+	num_of_comparisons_selection = selectionSort(data_vec_copy);
+	num_of_comparisons_insertion = insertionSort(data_vec_copy_2);
+
+	output_file<<num_of_comparisons_bubble<<" "<<num_of_comparisons_selection<<" "<<num_of_comparisons_insertion<<endl<<endl;
+
+	//filtering the vector of data
+	input_file>>num_of_searches;
+
+	pair<int, int> results{};
+
+	for (size_t i{}; i < num_of_searches; ++i){
+		getline(input_file, searched_data, ' ');
+		search_data_vec.push_back(stoi(searched_data));
+
+		results = sequentialSearch(data_vec, search_data_vec[i]);
+		output_file<<results.first<<" "<<results.second<<" ";
+
+		results = binarySearch(data_vec, search_data_vec[i]);
+		output_file<<results.second<<"\n";
+	}
+
+	input_file.close();
+	output_file.close();
 }
